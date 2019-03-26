@@ -1,8 +1,8 @@
-package com.justdoit;
+package com.datastructure;
 
 public class MaxHeap {
-    int[] heap;
-    int size;
+    private int[] heap;
+    private int size;
 
     public MaxHeap(int maxSize) {
         heap = new int[maxSize];

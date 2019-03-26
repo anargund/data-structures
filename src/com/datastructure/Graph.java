@@ -1,4 +1,4 @@
-package com.justdoit;
+package com.datastructure;
 
 import java.util.*;
 
@@ -122,7 +122,7 @@ public class Graph {
 
     public void dijkstras(int startingNode) {
         HashSet<Integer> sptSet = new HashSet<>();
-        HashMap<Integer, Integer> minDist = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> minDist = new HashMap<>();
         Iterator<Integer> keyIterator = nodeMap.keySet().iterator();
         for(int j = 0 ; j < verrtexNo; j++) {
             minDist.put(j, Integer.MAX_VALUE);
@@ -148,8 +148,7 @@ public class Graph {
         int mDist = Integer.MAX_VALUE;
         int mIndex = -1;
         Iterator<Integer> keyItr = minDist.keySet().iterator();
-        while (keyItr.hasNext()) {
-            Integer index = keyItr.next();
+        for (Integer index : minDist.keySet()) {
             if (!sptSet.contains(index) && mDist >= minDist.get(index)) {
                 mDist = minDist.get(index);
                 mIndex = index;
@@ -163,7 +162,7 @@ class Edge {
     int node;
     int weight;
 
-    public Edge(int node, int weight) {
+    Edge(int node, int weight) {
         this.node = node;
         this.weight = weight;
     }
