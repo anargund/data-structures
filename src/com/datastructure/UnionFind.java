@@ -1,10 +1,10 @@
-package com.justdoit;
+package com.datastructure;
 
 import java.util.ArrayList;
 
 class UnionFind {
-    int[] parent;
-    int[] rank;
+    private int[] parent;
+    private int[] rank;
 
     public UnionFind(int n) {
         parent = new int[n];
@@ -15,7 +15,7 @@ class UnionFind {
         }
     }
 
-    public int find(int x) {
+    private int find(int x) {
         ArrayList<Integer> path = new ArrayList<>();
         while(parent[x] != x) {
             path.add(x);
@@ -28,16 +28,16 @@ class UnionFind {
         return x;
     }
 
-    public boolean union(int x, int y) {
-        int fx = find(x);
-        int fy = find(y);
-        if(fx == fy) return false;
-        if(rank[fx] <= rank[fy]) {
-            parent[fx] = fy;
-            rank[fy] += rank[fx];
+    public boolean union(int elementA, int elementB) {
+        int fA = find(elementA);
+        int fB = find(elementB);
+        if(fA == fB) return false;
+        if(rank[fA] <= rank[fB]) {
+            parent[fA] = fB;
+            rank[fB] += rank[fA];
         } else {
-            parent[fy] = fx;
-            rank[fx] += rank[fy];
+            parent[fB] = fA;
+            rank[fA] += rank[fB];
         }
         return true;
     }
