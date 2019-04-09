@@ -120,6 +120,49 @@ public class Graph {
         System.out.println("dfs: " + output);
     }
 
+    public void dfsRecursive(int v) {
+        boolean[] visited = new boolean[verrtexNo];
+        List<Integer> output = new LinkedList<>();
+        dfsRecursion(v, visited, output);
+        System.out.println("dfsRecursive: " + output);
+    }
+
+    private void dfsRecursion(int v, boolean[] visited, List<Integer> output) {
+        List<Edge> edges = nodeMap.get(v);
+        visited[v] = true;
+        output.add(v);
+        if(edges == null) return;
+        for(Edge edge: edges) {
+            if(!visited[edge.node]) {
+                dfsRecursion(edge.node, visited, output);
+            }
+        }
+    }
+
+    public void topologicalSort() {
+        Stack<Integer> s = new Stack();
+        boolean[] visited = new boolean[verrtexNo];
+
+        for(Integer key : nodeMap.keySet()) {
+            if(!visited[key])
+                topologicalSortRecursion(key, s, visited);
+        }
+
+        System.out.println("topologicalSort: " + s);
+    }
+
+    private void topologicalSortRecursion(int vertex, Stack<Integer> s, boolean[] visited) {
+        visited[vertex] = true;
+        List<Edge> edges = nodeMap.get(vertex);
+        if(edges != null) {
+            for (Edge edge : edges) {
+                if (!visited[edge.node])
+                    topologicalSortRecursion(edge.node, s, visited);
+            }
+        }
+        s.push(vertex);
+    }
+
     public void dijkstras(int startingNode) {
         HashSet<Integer> sptSet = new HashSet<>();
         HashMap<Integer, Integer> minDist = new HashMap<>();
@@ -155,6 +198,19 @@ public class Graph {
             }
         }
         return mIndex;
+    }
+
+    public static void main(String[] args) {
+        Graph g = new Graph(4);
+        g.addEdge(0,1,1);
+        g.addEdge(0,2,1);
+        g.addEdge(0,3,1);
+        g.addEdge(2,3,1);
+        g.addEdge(1,3,1);
+        g.addEdge(1,2,1);
+        g.addEdge(3,0,1);
+        g.dfsRecursive(0);
+        g.topologicalSort();
     }
 }
 
