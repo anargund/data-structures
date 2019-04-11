@@ -1,4 +1,4 @@
-package com.trees;
+package com.binarySearch;
 
 import java.util.Arrays;
 import java.util.TreeSet;
