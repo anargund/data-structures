@@ -9,9 +9,12 @@ class ListNode {
     }
 }
 
-//LeetCode#148 : https://leetcode.com/problems/sort-list/
-//time complexity O(nlogn)
-//Space complexity O(logn)
+/**
+ * #148. Sort List
+ * https://leetcode.com/problems/sort-list/
+ * time complexity O(nlogn)
+ * Space complexity O(logn)
+ */
 public class SortLinkedList {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) {

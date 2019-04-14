@@ -1,4 +1,4 @@
-package com.datastructure.binarySearch;
+package com.binarySearch;
 
 /**
  * 50. Pow(x, n)

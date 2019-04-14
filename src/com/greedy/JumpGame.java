@@ -1,6 +1,9 @@
 package com.greedy;
 
-//#45 https://leetcode.com/problems/jump-game-ii/
+/**
+ * #45. Jump Game II
+ * https://leetcode.com/problems/jump-game-ii/
+ */
 public class JumpGame {
     public static void main(String[] args) {
         JumpGame jumpGame = new JumpGame();

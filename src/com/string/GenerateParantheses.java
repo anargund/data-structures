@@ -3,6 +3,10 @@ package com.string;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * # 22. Generate Parentheses
+ * https://leetcode.com/problems/generate-parentheses/
+ */
 class GenerateParantheses {
 
     public static void main(String[] args) {
