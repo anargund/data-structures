@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * Leetcode#102 Binary Tree Level Order Traversal
+ * #102 Binary Tree Level Order Traversal
  * https://leetcode.com/problems/binary-tree-level-order-traversal/
  */
 public class BinaryTreeLevelOrderTraversal {
