@@ -3,6 +3,10 @@ package com.string;
 /**
  * #616 Add Bold Tag in String
  * https://leetcode.com/problems/add-bold-tag-in-string/
+ * T : O(n*k)
+ * n : length of string
+ * k : total length of words in dict
+ *
  */
 public class AddBoldTag {
 
@@ -46,7 +50,9 @@ public class AddBoldTag {
                 j++;
             }
             //append it to the result
-            sb.append("<b>" + s.substring(i,j) + "</b>");
+            sb.append("<b>");
+            sb.append(s.substring(i,j));
+            sb.append("</b>");
             //note, when we did j++, we made 1 extra move
             //so set i = j - 1
             i = j-1;
