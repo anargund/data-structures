@@ -4,39 +4,23 @@ import java.util.*;
 
 public class Graph {
     private List<Edge>[] node;
-    private HashMap<Integer, List<Edge>> nodeMap;
     private int verrtexNo;
 
     public Graph(int n) {
         verrtexNo = n;
         node = new LinkedList[n];
-        nodeMap = new HashMap<>();
         for (int i = 0; i < node.length; i++) {
             node[i] = new LinkedList<>();
         }
     }
 
-    public void addEdge(int node1, int node2, int weight) {
+    private void addEdge(int node1, int node2, int weight) {
         node[node1].add(0, new Edge(node2, weight));
-        List<Edge> nodes;
-        if (nodeMap.containsKey(node1)) {
-            nodes = nodeMap.get(node1);
-        } else {
-            nodes = new ArrayList<>();
-            nodeMap.put(node1, nodes);
-        }
-        nodes.add(new Edge(node2, weight));
     }
 
     public boolean isConnected(int node1, int node2) {
-//        for(Edge edge : node[node1]) {
-//            if(edge.node == node2) return true;
-//        }
-        if (nodeMap.containsKey(node1)) {
-            List<Edge> nodes = nodeMap.get(node1);
-            for (Edge node : nodes) {
-                if (node.node == node2) return true;
-            }
+        for(Edge edge : node[node1]) {
+            if(edge.node == node2) return true;
         }
         return false;
     }
@@ -44,12 +28,11 @@ public class Graph {
     @Override
     public String toString() {
         String print = "";
-//        for(int i = 0 ; i < node.length; i++) {
-//            print += node[i].toString();
-//            print += "\n";
-//        }
-        return nodeMap.values().toString();
-//        return print;
+        for(List<Edge> e : node) {
+            print += e.toString();
+            print += "\n";
+        }
+        return print;
     }
 
     public void bfs() {
@@ -120,7 +103,7 @@ public class Graph {
         System.out.println("dfs: " + output);
     }
 
-    public void dfsRecursive(int v) {
+    private void dfsRecursive(int v) {
         boolean[] visited = new boolean[verrtexNo];
         List<Integer> output = new LinkedList<>();
         dfsRecursion(v, visited, output);
@@ -128,7 +111,7 @@ public class Graph {
     }
 
     private void dfsRecursion(int v, boolean[] visited, List<Integer> output) {
-        List<Edge> edges = nodeMap.get(v);
+        List<Edge> edges = node[v];
         visited[v] = true;
         output.add(v);
         if(edges == null) return;
@@ -139,34 +122,66 @@ public class Graph {
         }
     }
 
-    public void topologicalSort() {
+    private int[] topologicalSort() {
         Stack<Integer> s = new Stack();
-        boolean[] visited = new boolean[verrtexNo];
+        //1 : white
+        //2 : gray
+        //3 : black
+        int[] color = new int[verrtexNo];
+        boolean hasCycle = false;
 
-        for(Integer key : nodeMap.keySet()) {
-            if(!visited[key])
-                topologicalSortRecursion(key, s, visited);
+        //add all vertex to white set
+        for(int j = 0; j < verrtexNo; j++) {
+           color[j] = 1;
         }
 
-        System.out.println("topologicalSort: " + s);
-    }
-
-    private void topologicalSortRecursion(int vertex, Stack<Integer> s, boolean[] visited) {
-        visited[vertex] = true;
-        List<Edge> edges = nodeMap.get(vertex);
-        if(edges != null) {
-            for (Edge edge : edges) {
-                if (!visited[edge.node])
-                    topologicalSortRecursion(edge.node, s, visited);
+        for(int i = 0 ; i < verrtexNo; i++) {
+            if(color[i] == 1) {//white
+                if (!hasCycle && topologicalSortRecursion(i, s, color)) {
+                    hasCycle = true;
+                }
             }
         }
+
+        if(hasCycle) {
+            return new int[0];
+        } else {
+            int[] topSort = new int[s.size()];
+            int index = 0;
+            while(!s.isEmpty()) {
+                topSort[index++] = s.pop();
+            }
+            return topSort;
+        }
+    }
+
+    private boolean topologicalSortRecursion(int vertex, Stack<Integer> s, int[] color) {
+        //move from white to gray
+        color[vertex] = 2; //gray
+        for(Edge edge: this.node[vertex]) {
+            //if in black, means it is done exploring
+            if(color[edge.node] == 3) { //black
+                continue;
+            }
+
+            //if in gray, we visited a node which is part of current recursion i.e. cycle
+            if(color[edge.node] == 2) {//gray
+                return true;
+            }
+
+            if(topologicalSortRecursion(edge.node, s, color)) {
+                return true;
+            }
+        }
+        //move from grey set to black as we are done exploring current node
+        color[vertex] = 3; //black
         s.push(vertex);
+        return false;
     }
 
     public void dijkstras(int startingNode) {
         HashSet<Integer> sptSet = new HashSet<>();
         HashMap<Integer, Integer> minDist = new HashMap<>();
-        Iterator<Integer> keyIterator = nodeMap.keySet().iterator();
         for(int j = 0 ; j < verrtexNo; j++) {
             minDist.put(j, Integer.MAX_VALUE);
         }
@@ -174,7 +189,7 @@ public class Graph {
         for (int i = 0; i < verrtexNo; i++) {
             int mIndex = minNode(sptSet, minDist);
             sptSet.add(mIndex);
-            List<Edge> edgeList = nodeMap.get(mIndex);
+            List<Edge> edgeList = node[mIndex];
             if(edgeList != null) {
                 for (Edge node : edgeList) {
                     if (!sptSet.contains(node.node)
@@ -200,17 +215,16 @@ public class Graph {
         return mIndex;
     }
 
-    public static void main(String[] args) {
-        Graph g = new Graph(4);
-        g.addEdge(0,1,1);
-        g.addEdge(0,2,1);
-        g.addEdge(0,3,1);
-        g.addEdge(2,3,1);
-        g.addEdge(1,3,1);
-        g.addEdge(1,2,1);
-        g.addEdge(3,0,1);
+    public static void
+    main(String[] args) {
+        int[][] edges = {{1,0},{2,0},{3,1},{3,2}};
+        int vertNo = 4;
+        Graph g = new Graph(vertNo);
+        for(int[] edge : edges) {
+            g.addEdge(edge[1],edge[0],1);
+        }
         g.dfsRecursive(0);
-        g.topologicalSort();
+        System.out.println(Arrays.toString(g.topologicalSort()));
     }
 }
 
