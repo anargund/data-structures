@@ -29,10 +29,15 @@ public class MergeSort {
 
     private void merge(int[] arr, int[] temp, int leftStart, int rightEnd) {
         int middle = leftStart + (rightEnd - leftStart)/2;
+        //pointer for left side of the array
         int left = leftStart;
+        //pointer where left part ends
         int leftEnd = middle;
+        //pointer where right part starts
         int rightStart = middle + 1;
+        //pointer for right side of the array
         int right = rightStart;
+        //pointer where result should be copied in temp array
         int index = left;
 
         while(left <= leftEnd && right <= rightEnd) {
@@ -46,8 +51,10 @@ public class MergeSort {
             index++;
         }
 
+        //only one of the below two lines will result into actual copy
         System.arraycopy(arr, left, temp, index, leftEnd - left + 1);
         System.arraycopy(arr, right, temp, index, rightEnd - right + 1);
+        //copy sorted array back to arr from temp
         System.arraycopy(temp, leftStart, arr, leftStart, rightEnd - leftStart + 1);
     }
 }

@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class QuickSort {
     public static void main(String[] args) {
         QuickSort quickSort = new QuickSort();
-        int[] temp = {45,12,85,32,89,39,69,44,42,1,6,8};
+        int[] temp = {45, 12, 85, 32, 89, 39, 69, 44, 42, 1, 6, 8};
         quickSort.quickSort(temp);
         System.out.println(Arrays.toString(temp));
     }
@@ -27,7 +27,7 @@ public class QuickSort {
 
     private int partition(int[] arr, int left, int right, int pivot) {
         while (left <= right) {
-        while (arr[left] < arr[pivot]) left++;
+            while (arr[left] < arr[pivot]) left++;
             while (arr[right] > arr[pivot]) right--;
 
             if (left <= right) {
